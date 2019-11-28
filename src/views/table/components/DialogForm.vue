@@ -50,25 +50,23 @@ export default {
         if (valid) {
           if (this.formStatus === 'add') {
             add(this.form).then(response => {
-              Swal.fire({
-                title: 'Success!',
-                icon: 'success',
-                confirmButtonText: 'OK'
+              this.$notify({
+                title: '成功',
+                type: 'success'
               })
               console.log(response)
-              this.dialogVisible = false
               this.$refs['form'].resetFields()
+              this.dialogVisible = false
             })
           } else {
             update(this.form).then(response => {
               console.log(response)
-              Swal.fire({
-                title: 'Success!',
-                icon: 'success',
-                confirmButtonText: 'OK'
+              this.$notify({
+                title: '成功',
+                type: 'success'
               })
-              this.dialogVisible = false
               this.$refs['form'].resetFields()
+              this.dialogVisible = false
             })
           }
         } else {
@@ -77,8 +75,8 @@ export default {
       })
     },
     onCancel() {
-      this.dialogVisible = false
       this.$refs['form'].resetFields()
+      this.dialogVisible = false
     },
     onOpen(row) {
       this.dialogVisible = true
@@ -92,8 +90,8 @@ export default {
       }
     },
     onClose(done) {
-      this.dialogVisible = false
       this.$refs['form'].resetFields()
+      this.dialogVisible = false
       done()
     }
   }
