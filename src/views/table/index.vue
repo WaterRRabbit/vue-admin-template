@@ -1,5 +1,10 @@
 <template>
   <div class="app-container">
+    <div class="header-container">
+      <el-button class="header-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
+        Add
+      </el-button>
+    </div>
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -23,9 +28,21 @@
           <span>{{ scope.row.username }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="CreateTime" align="center">
+      <el-table-column label="Create Time" align="center">
         <template slot-scope="scope">
-          {{ scope.row.createTime }}
+          {{ scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}') }}
+        </template>
+      </el-table-column>
+      <el-table-column label="Modified Time" align="center">
+        <template slot-scope="scope">
+          {{ scope.row.modifiedTime | parseTime('{y}-{m}-{d} {h}:{i}') }}
+        </template>
+      </el-table-column>
+      <el-table-column label="state" align="center">
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.state | statusFilter">
+            {{ scope.row.state | statusFilter }}
+          </el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作" fixed="right" width="200" align="center">
@@ -46,22 +63,35 @@
         @current-change="handleCurrentChange"
       />
     </div>
+    <!--  -->
+    <dialog-form
+      ref="dialogForm"
+    />
   </div>
 </template>
 
 <script>
 
-import { getList } from '@/api/user'
+import { getList, del } from '@/api/user'
+import { parseTime } from '@/utils'
+
+import DialogForm from './components/DialogForm'
+
+import Swal from 'sweetalert2'
 
 export default {
+  components: { DialogForm },
   filters: {
     statusFilter(status) {
       const statusMap = {
-        published: 'success',
-        draft: 'gray',
-        deleted: 'danger'
+        1: 'success',
+        0: 'gray',
+        2: 'danger'
       }
       return statusMap[status]
+    },
+    parseTime(cFormat) {
+      return parseTime(cFormat)
     }
   },
   data() {
@@ -86,10 +116,31 @@ export default {
       })
     },
     handleEdit(index, row) {
+      this.$refs.dialogForm.onOpen(row)
       console.log(index, row)
     },
+    handleCreate() {
+      this.$refs.dialogForm.onOpen()
+    },
     handleDelete(index, row) {
-      console.log(index, row)
+      Swal.fire({
+        title: 'Are you sure?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.value) {
+          del(row.id).then(response => {
+            console.log(response)
+            Swal.fire({
+              title: 'Deleted!',
+              icon: 'success'
+            })
+          })
+        }
+      })
     },
     handleSizeChange: function(pageSize) {
       this.pageSize = pageSize
@@ -116,6 +167,14 @@ export default {
   .pagination{
     &-container{
       margin-top: 20px;
+    }
+  }
+  .header{
+    &-container{
+      padding: 10px 0;
+    }
+    &-item{
+      margin-left: 0!important;
     }
   }
 </style>

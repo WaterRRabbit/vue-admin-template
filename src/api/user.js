@@ -30,3 +30,29 @@ export function getList(pageNum, pageSize) {
     params: { pageNum, pageSize }
   })
 }
+
+export function add(data) {
+  return request({
+    url: '/user/add',
+    method: 'post',
+    data
+  })
+}
+
+export function update(data) {
+  return request({
+    url: '/user/update',
+    method: 'post',
+    data
+  })
+}
+
+export function del(id) {
+  return request({
+    url: '/user/del',
+    method: 'post',
+    data: {
+      id: id
+    }
+  })
+}
