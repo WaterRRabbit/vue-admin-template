@@ -78,6 +78,28 @@ export const constantRoutes = [
   },
 
   {
+    path: '/article',
+    component: Layout,
+    redirect: '/article/list',
+    name: 'Article',
+    meta: { title: 'Article', icon: 'form' },
+    children: [
+      {
+        path: 'list',
+        name: 'List',
+        component: () => import('@/views/article/list'),
+        meta: { title: 'List', icon: 'list' }
+      },
+      {
+        path: 'editor',
+        name: 'Editor',
+        component: () => import('@/views/article/editor'),
+        meta: { title: 'Editor', icon: 'edit' }
+      }
+    ]
+  },
+
+  {
     path: '/form',
     component: Layout,
     children: [

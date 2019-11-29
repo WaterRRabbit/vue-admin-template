@@ -46,7 +46,7 @@ module.exports = {
           ['^' + process.env.VUE_APP_BASE_API]: ''
         }
       }
-    },
+    }
     // after: require('./mock/mock-server.js')
   },
   configureWebpack: {
