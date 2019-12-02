@@ -1,17 +1,12 @@
 <template>
   <div class="article-list-container">
-    <!--  -->
-    <ul class="infinite-list" v-infinite-scroll="load" style="overflow:auto">
-      <li v-for="i in count" class="infinite-list-item">{{ i }}</li>
-    </ul>
+    <el-button @click="go">Go</el-button>
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
 import ArticleCard from './components/ArticleCard'
-import infiniteScroll from 'vue-infinite-scroll'
-Vue.use(infiniteScroll)
 export default {
   name: 'ArticleList',
   components: { ArticleCard },
@@ -51,9 +46,8 @@ export default {
     }
   },
   methods: {
-    load() {
-      console.log('loading')
-      this.count += 2
+    go() {
+      this.$router.push({name:'CreateArticle'})
     }
   }
 }

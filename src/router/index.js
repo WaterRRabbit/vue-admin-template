@@ -94,7 +94,21 @@ export const constantRoutes = [
         path: 'editor',
         name: 'Editor',
         component: () => import('@/views/article/editor'),
-        meta: { title: 'Editor', icon: 'edit' }
+        meta: { title: 'Editor', icon: 'edit' },
+        hidden: true
+      },
+      {
+        path: 'create',
+        component: () => import('@/views/article/create'),
+        name: 'CreateArticle',
+        meta: { title: 'Create Article', icon: 'edit' }
+      },
+      {
+        path: 'edit/:id(\\d+)',
+        component: () => import('@/views/article/update'),
+        name: 'EditArticle',
+        meta: { title: 'Edit Article', noCache: true, activeMenu: '/article/list' },
+        hidden: true
       }
     ]
   },

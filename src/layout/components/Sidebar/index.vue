@@ -26,6 +26,11 @@ import variables from '@/styles/variables.scss'
 
 export default {
   components: { SidebarItem, Logo },
+  data() {
+    return {
+      activeIndex: '/'
+    }
+  },
   computed: {
     ...mapGetters([
       'sidebar'
@@ -50,6 +55,11 @@ export default {
     },
     isCollapse() {
       return !this.sidebar.opened
+    }
+  },
+  watch: {
+    $route() {
+      console.log('变化')
     }
   }
 }
