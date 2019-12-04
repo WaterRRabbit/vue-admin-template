@@ -9,6 +9,7 @@ class VueAdminTemplateApplicationTests {
 
     @Test
     void contextLoads() {
+
     }
 
 }

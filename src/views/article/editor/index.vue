@@ -25,6 +25,7 @@ import Editor from 'tui-editor'
 import 'tui-editor/dist/tui-editor-extScrollSync.js'
 import MDinput from '@/components/MDinput'
 import Sticky from '@/components/Sticky' // 粘性header组件
+import Swal from 'sweetalert2'
 
 import { get, publish, draft } from '@/api/article'
 
@@ -90,6 +91,11 @@ export default {
       publish(this.postForm).then(response => {
         console.log(response)
         this.loading = false
+        this.postForm.status = 'publish'
+        Swal.fire({
+          title: 'Success',
+          icon: 'success'
+        })
       }).catch(err => {
         console.log(err)
         this.loading = false
@@ -101,6 +107,11 @@ export default {
       draft(this.postForm).then(response => {
         console.log(response)
         this.loading = false
+        this.postForm.status = 'draft'
+        Swal.fire({
+          title: 'Success',
+          icon: 'success'
+        })
       }).catch(err => {
         console.log(err)
         this.loading = false

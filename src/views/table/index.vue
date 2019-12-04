@@ -15,12 +15,7 @@
     >
       <el-table-column align="center" label="ID" width="95">
         <template slot-scope="scope">
-          {{ scope.$index }}
-        </template>
-      </el-table-column>
-      <el-table-column label="Id">
-        <template slot-scope="scope">
-          {{ scope.row.id }}
+          {{ scope.row.userId }}
         </template>
       </el-table-column>
       <el-table-column label="Username" align="center">
@@ -38,10 +33,10 @@
           {{ scope.row.modifiedTime | parseTime('{y}-{m}-{d} {h}:{i}') }}
         </template>
       </el-table-column>
-      <el-table-column label="state" align="center">
+      <el-table-column label="status" align="center">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.state | statusFilter">
-            {{ scope.row.state | statusFilter }}
+          <el-tag :type="scope.row.status | statusFilter">
+            {{ scope.row.status | statusFilter }}
           </el-tag>
         </template>
       </el-table-column>

@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     go() {
-      this.$router.push({name:'CreateArticle'})
+      this.$router.push({ name: 'CreateArticle' })
     }
   }
 }

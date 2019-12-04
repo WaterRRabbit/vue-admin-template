@@ -12,6 +12,15 @@
         <el-form-item label="Password" prop="password">
           <el-input v-model="form.password" show-password />
         </el-form-item>
+        <el-form-item label="Confirm" prop="checkPassword">
+          <el-input v-model="form.checkPassword" show-password />
+        </el-form-item>
+        <el-form-item label="Email" prop="email">
+          <el-input v-model="form.email" />
+        </el-form-item>
+        <el-form-item label="Mobile" prop="mobile">
+          <el-input v-model="form.mobile" />
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">Submit</el-button>
           <el-button @click="onCancel">Cancel</el-button>
@@ -27,11 +36,23 @@ import { add, update } from '@/api/user'
 
 export default {
   data() {
+    var checkPassword = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请再次输入密码'))
+      } else if (value !== this.form.password) {
+        callback(new Error('两次输入密码不一致!'))
+      } else {
+        callback()
+      }
+    }
     return {
       form: {
-        id: undefined,
+        userId: undefined,
         username: '',
-        password: ''
+        password: '',
+        email: '',
+        mobile: '',
+        checkPassword: ''
       },
       formStatus: '',
       dialogVisible: false,
@@ -41,6 +62,16 @@ export default {
         ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' }
+        ],
+        email: [
+          { required: true, message: '请输入邮箱', trigger: 'blur' },
+          { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+        ],
+        checkPassword: [
+          { validator: checkPassword, trigger: 'blur' }
+        ],
+        mobile: [
+          { required: true, message: '请输入手机号码', trigger: 'blur' }
         ]
       }
     }
