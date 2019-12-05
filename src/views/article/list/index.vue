@@ -5,7 +5,6 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import ArticleCard from './components/ArticleCard'
 export default {
   name: 'ArticleList',

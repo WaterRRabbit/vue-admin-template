@@ -1,85 +1,109 @@
 <template>
-  <div class="app-container">
-    <el-form ref="form" :model="form" label-width="120px">
-      <el-form-item label="Activity name">
-        <el-input v-model="form.name" />
-      </el-form-item>
-      <el-form-item label="Activity zone">
-        <el-select v-model="form.region" placeholder="please select your zone">
-          <el-option label="Zone one" value="shanghai" />
-          <el-option label="Zone two" value="beijing" />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="Activity time">
-        <el-col :span="11">
-          <el-date-picker v-model="form.date1" type="date" placeholder="Pick a date" style="width: 100%;" />
-        </el-col>
-        <el-col :span="2" class="line">-</el-col>
-        <el-col :span="11">
-          <el-time-picker v-model="form.date2" type="fixed-time" placeholder="Pick a time" style="width: 100%;" />
-        </el-col>
-      </el-form-item>
-      <el-form-item label="Instant delivery">
-        <el-switch v-model="form.delivery" />
-      </el-form-item>
-      <el-form-item label="Activity type">
-        <el-checkbox-group v-model="form.type">
-          <el-checkbox label="Online activities" name="type" />
-          <el-checkbox label="Promotion activities" name="type" />
-          <el-checkbox label="Offline activities" name="type" />
-          <el-checkbox label="Simple brand exposure" name="type" />
-        </el-checkbox-group>
-      </el-form-item>
-      <el-form-item label="Resources">
-        <el-radio-group v-model="form.resource">
-          <el-radio label="Sponsor" />
-          <el-radio label="Venue" />
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="Activity form">
-        <el-input v-model="form.desc" type="textarea" />
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="onSubmit">Create</el-button>
-        <el-button @click="onCancel">Cancel</el-button>
-      </el-form-item>
-    </el-form>
+  <div class="coder-container">
+    <div class="operation-container">
+      <el-row>
+        <el-button icon="el-icon-search" circle @click="run" />
+        <el-switch
+          v-model="theme"
+          class="theme-switch"
+          active-color="#000"
+          active-text="黑夜"
+        />
+      </el-row>
+    </div>
+    <textarea ref="codeEditor" v-model="code" class="code-editor" />
   </div>
 </template>
 
 <script>
+import 'codemirror/theme/monokai.css'
+import 'codemirror/theme/eclipse.css'
+import 'codemirror/lib/codemirror.css'
+import 'codemirror/addon/hint/show-hint.css'
+
+const CodeMirror = require('codemirror/lib/codemirror')
+require('codemirror/addon/edit/matchbrackets')
+require('codemirror/addon/selection/active-line')
+require('codemirror/mode/clike/clike')
+require('codemirror/addon/hint/show-hint')
+
 export default {
   data() {
     return {
-      form: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
+      options: [{
+        value: 'monokai',
+        label: '默认'
+      }, {
+        value: 'eclipse',
+        label: '黑夜'
+      }],
+      code: '',
+      editor: undefined,
+      theme: false
+    }
+  },
+  watch: {
+    theme() {
+      if (this.theme) {
+        this.editor.setOption('theme', 'monokai')
+      } else {
+        this.editor.setOption('theme', 'eclipse')
       }
     }
   },
+  mounted() {
+    this.editor = CodeMirror.fromTextArea(this.$refs.codeEditor, {
+      mode: 'text/x-java',
+      indentWithTabs: true,
+      smartIndent: true,
+      lineNumbers: true,
+      matchBrackets: true,
+      theme: 'eclipse',
+      tabSize: 4,
+      indentUnit: 4,
+      // autofocus: true,
+      extraKeys: { 'Ctrl': 'autocomplete' }, // 自定义快捷键
+      hintOptions: { // 自定义提示选项
+        tables: {
+          users: ['name', 'score', 'birthDate'],
+          countries: ['name', 'population', 'size']
+        }
+      }
+    })
+    this.editor.setSize('', '500px')
+    this.editor.on('onchange', function() {
+      this.editor.showHint()
+    })
+  },
   methods: {
-    onSubmit() {
-      this.$message('submit!')
-    },
-    onCancel() {
-      this.$message({
-        message: 'cancel!',
-        type: 'warning'
-      })
+    run() {
+      console.log(this.editor.getValue())
     }
   }
 }
 </script>
 
-<style scoped>
+<style>
+.coder-container{
+  padding: 30px;
+}
+.operation-container{
+  margin-bottom: 10px;
+}
 .line{
   text-align: center;
+}
+.CodeMirror{
+  border: 1px solid #DCDFE6;
+  border-radius: 5px;
+}
+.CodeMirror-code {
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: 19px;
+}
+.theme-switch{
+  float: right;
+  top: 20px;
 }
 </style>
 

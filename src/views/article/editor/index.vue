@@ -76,7 +76,7 @@ export default {
   methods: {
     fetchData(id) {
       get(id).then(response => {
-        let data = response.data
+        const data = response.data
         console.log(data)
         this.postForm.title = data.title
         this.editor.setMarkdown(data.markdown)
