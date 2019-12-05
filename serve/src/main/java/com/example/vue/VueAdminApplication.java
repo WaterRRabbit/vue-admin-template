@@ -6,10 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @MapperScan("com.example.vue.mapper")
-public class VueAdminTemplateApplication {
+public class VueAdminApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(VueAdminTemplateApplication.class, args);
+        SpringApplication.run(VueAdminApplication.class, args);
     }
 
 }
